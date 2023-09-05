@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone repo') {
+            steps {
+                echo 'Clone GitHub Repo'
+                git branch: 'main', url:'https://github.com/devclass1/classwebsite2.git'
+            }
+        }
+        stage('Check Workspace') {
+            steps {
+                sh'''
+                echo 'List all files in WorkSpace  Directory'
+                ls -l /var/lib/jenkins/workspace/project10/
+                rm -rf /tmp/sitecode/
+                
+                '''
+            }
+        }
+        stage('Move Files') {
+            steps {
+                sh'''
+                echo 'copy files in a different directory'
+                mkdir /tmp/sitecode/
+                cp -R /var/lib/jenkins/workspace/project10/* /tmp/sitecode/
+                ls -l /tmp/sitecode/
+                
+                '''
+            }
+        }
+    }
+}
